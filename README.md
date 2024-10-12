@@ -97,3 +97,45 @@ button:hover {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+document.getElementById('resumeForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  
+  // Get form values
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const jobTitle = document.getElementById('jobTitle').value;
+  const skills = document.getElementById('skills').value.split(',');
+  const experience = document.getElementById('experience').value;
+  const education = document.getElementById('education').value;
+
+  // Generate resume HTML
+  const resumeContent = `
+    <h1>${name}</h1>
+    <p><strong>Job Title:</strong> ${jobTitle}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Phone:</strong> ${phone}</p>
+
+    <h3>Skills:</h3>
+    <ul>${skills.map(skill => `<li>${skill.trim()}</li>`).join('')}</ul>
+
+    <h3>Experience:</h3>
+    <p>${experience}</p>
+
+    <h3>Education:</h3>
+    <p>${education}</p>
+  `;
+
+  // Display the generated resume
+  document.getElementById('resumeContent').innerHTML = resumeContent;
+  document.getElementById('resumePreview').style.display = 'block';
+});
+
+document.getElementById('downloadBtn').addEventListener('click', function() {
+  const resumeContent = document.getElementById('resumeContent').innerHTML;
+  const blob = new Blob([resumeContent], { type: 'text/html' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'resume.html';
+  link.click();
+});
